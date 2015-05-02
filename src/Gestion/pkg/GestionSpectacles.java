@@ -5,11 +5,17 @@
  */
 package Gestion.pkg;
 
+import static Gestion.pkg.SpectaclesDisponibles.connection;
 import java.io.File;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import oracle.jdbc.OracleTypes;
 
 /**
  *
@@ -17,6 +23,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class GestionSpectacles extends javax.swing.JFrame {
     public static Connection connection;
+    ResultSet rset;
+    public JFileChooser chooser=null;
     /**
      * Creates new form GestionSpectacles
      * @param conn
@@ -24,8 +32,37 @@ public class GestionSpectacles extends javax.swing.JFrame {
     public GestionSpectacles(Connection conn) {
         initComponents();
         connection = conn;
+        String sql1 = "SELECT NUMSPECTACLE, NOMSPECTACLE, NOMCATEGORIE, ARTISTESPECTACLE, AFFICHESPECTACLE FROM SPECTACLES SP" +
+                     " INNER JOIN CATEGORIES_SPECTACLE CS ON SP.NUMCATEGORIE=CS.NUMCATEGORIE Order by SP.NUMSPECTACLE";
+        try {
+            Statement stm = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rset = stm.executeQuery(sql1);
+            rset.next();
+            AfficherSpectacle();
+            
+            CallableStatement stm2 = connection.prepareCall("{ ? = call GESTION.AFFICHERCATEGORIES()}");
+            stm2.registerOutParameter(1, OracleTypes.CURSOR);
+            stm2.execute(); //execution de la fonction
+            // Caster le paramètre de retour en ResultSet
+            rset = (ResultSet) stm2.getObject(1);
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
-
+    public void AfficherSpectacle()
+    {
+        try{
+            TB_Numero.setText(Long.toString(rset.getLong(1)));
+            TB_Nom.setText(rset.getString(2));
+            LB_Artiste.setText(rset.getString(3));
+            //CB_Categories.setText(rset.getString(4));
+        }
+        catch(SQLException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,31 +89,66 @@ public class GestionSpectacles extends javax.swing.JFrame {
         TB_Numero = new javax.swing.JTextField();
         TB_Nom = new javax.swing.JTextField();
         LB_Artiste = new javax.swing.JTextField();
-        LB_Categorie = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         IMG_AfficheSpectacle = new javax.swing.JLabel();
         BTN_ChoisirPhoto = new javax.swing.JButton();
+        CB_Categories = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestion spectacles");
 
         BTN_Ajouter.setText("Ajouter");
+        BTN_Ajouter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_AjouterActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Quitter");
 
         BTN_Modifier.setText("Modifier");
 
         BTN_Supprimer.setText("Supprimer");
+        BTN_Supprimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_SupprimerActionPerformed(evt);
+            }
+        });
 
         BTN_Vider.setText("Vider");
+        BTN_Vider.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_ViderActionPerformed(evt);
+            }
+        });
 
         BTN_Dernier.setText("Dernier");
+        BTN_Dernier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_DernierActionPerformed(evt);
+            }
+        });
 
         BTN_Suivant.setText(">>");
+        BTN_Suivant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_SuivantActionPerformed(evt);
+            }
+        });
 
         BTN_Precedent.setText("<<");
+        BTN_Precedent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_PrecedentActionPerformed(evt);
+            }
+        });
 
         BTN_Premier.setText("Premier");
+        BTN_Premier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_PremierActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Nom");
 
@@ -100,6 +172,8 @@ public class GestionSpectacles extends javax.swing.JFrame {
             }
         });
 
+        CB_Categories.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,11 +189,11 @@ public class GestionSpectacles extends javax.swing.JFrame {
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TB_Nom, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TB_Numero, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LB_Artiste, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LB_Categorie, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(TB_Nom, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                            .addComponent(TB_Numero, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                            .addComponent(LB_Artiste, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                            .addComponent(CB_Categories, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -168,8 +242,8 @@ public class GestionSpectacles extends javax.swing.JFrame {
                             .addComponent(LB_Artiste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(LB_Categorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(CB_Categories, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(42, 42, 42))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,14 +290,13 @@ public class GestionSpectacles extends javax.swing.JFrame {
         TB_Numero.getAccessibleContext().setAccessibleName("TB_Numero");
         TB_Nom.getAccessibleContext().setAccessibleName("TB_Nom");
         LB_Artiste.getAccessibleContext().setAccessibleName("LB_Artiste");
-        LB_Categorie.getAccessibleContext().setAccessibleName("LB_Categorie");
         IMG_AfficheSpectacle.getAccessibleContext().setAccessibleName("IMG_AfficheSpectacle");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void BTN_ChoisirPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ChoisirPhotoActionPerformed
-        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir") + "\\src\\Gestion\\pkg\\Images");
+        chooser = new JFileChooser(System.getProperty("user.dir") + "\\src\\Gestion\\pkg\\Images");
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
         "JPG & GIF Images", "jpg", "gif", "jpeg", "png", "bmp");
         chooser.setFileFilter(filter);
@@ -233,6 +306,80 @@ public class GestionSpectacles extends javax.swing.JFrame {
             IMG_AfficheSpectacle.setSize(200,200);
         }
     }//GEN-LAST:event_BTN_ChoisirPhotoActionPerformed
+
+    private void BTN_PremierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_PremierActionPerformed
+        try {
+            rset.first();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        AfficherSpectacle();
+    }//GEN-LAST:event_BTN_PremierActionPerformed
+
+    private void BTN_DernierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_DernierActionPerformed
+        try {
+            rset.last();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        AfficherSpectacle();
+    }//GEN-LAST:event_BTN_DernierActionPerformed
+
+    private void BTN_PrecedentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_PrecedentActionPerformed
+        try{
+            if(rset.previous())
+                AfficherSpectacle();
+        }catch (SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        AfficherSpectacle();  
+    }//GEN-LAST:event_BTN_PrecedentActionPerformed
+
+    private void BTN_SuivantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_SuivantActionPerformed
+        try{
+            if(rset.next())
+                AfficherSpectacle();
+        }catch (SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        AfficherSpectacle(); 
+    }//GEN-LAST:event_BTN_SuivantActionPerformed
+
+    private void BTN_ViderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ViderActionPerformed
+        TB_Numero.setText("");
+        TB_Nom.setText("");
+        LB_Artiste.setText("");
+        //CB_Categories.setText("");
+    }//GEN-LAST:event_BTN_ViderActionPerformed
+
+    private void BTN_AjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AjouterActionPerformed
+                try {
+                    TB_Numero.setText("");
+                    CallableStatement stm = connection.prepareCall("{call GESTION.AJOUTERSPECTACLE(?,?,?,?)}");
+                    stm.setString(1, TB_Nom.getText());
+                    stm.setString(2, LB_Artiste.getText());
+                    //stm.setLong(3, Long.parseLong(LB_Categorie.getText()));
+                    if(chooser != null)
+                        stm.setString(4, chooser.getSelectedFile().getPath());
+                    else
+                        stm.setString(4, IMG_AfficheSpectacle.getIcon().toString());
+                    stm.execute(); //execution de la fonction
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+    }//GEN-LAST:event_BTN_AjouterActionPerformed
+
+    private void BTN_SupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_SupprimerActionPerformed
+                try {
+                    CallableStatement stm = connection.prepareCall("{call GESTION.SUPPRIMERSPECTACLE(?)}");
+                    stm.setString(1, TB_Numero.getText());
+                    stm.execute(); //execution de la fonction
+                    rset.beforeFirst();;
+                    AfficherSpectacle();
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+    }//GEN-LAST:event_BTN_SupprimerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -279,9 +426,9 @@ public class GestionSpectacles extends javax.swing.JFrame {
     private javax.swing.JButton BTN_Suivant;
     private javax.swing.JButton BTN_Supprimer;
     private javax.swing.JButton BTN_Vider;
+    private javax.swing.JComboBox CB_Categories;
     private javax.swing.JLabel IMG_AfficheSpectacle;
     private javax.swing.JTextField LB_Artiste;
-    private javax.swing.JTextField LB_Categorie;
     private javax.swing.JTextField TB_Nom;
     private javax.swing.JTextField TB_Numero;
     private javax.swing.JButton jButton2;

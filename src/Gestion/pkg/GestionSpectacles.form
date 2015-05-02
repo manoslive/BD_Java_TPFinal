@@ -36,11 +36,11 @@
                           <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="TB_Nom" alignment="0" min="-2" pref="189" max="-2" attributes="0"/>
-                          <Component id="TB_Numero" min="-2" pref="189" max="-2" attributes="0"/>
-                          <Component id="LB_Artiste" alignment="1" min="-2" pref="189" max="-2" attributes="0"/>
-                          <Component id="LB_Categorie" alignment="1" min="-2" pref="189" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="TB_Nom" alignment="0" pref="189" max="32767" attributes="0"/>
+                          <Component id="TB_Numero" pref="189" max="32767" attributes="0"/>
+                          <Component id="LB_Artiste" alignment="0" pref="189" max="32767" attributes="0"/>
+                          <Component id="CB_Categories" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jSeparator2" min="-2" pref="14" max="-2" attributes="0"/>
@@ -105,8 +105,8 @@
                       </Group>
                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="LB_Categorie" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="CB_Categories" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                   </Group>
@@ -156,6 +156,9 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="BTN_Ajouter"/>
       </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_AjouterActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
@@ -180,6 +183,9 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="BTN_Supprimer"/>
       </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_SupprimerActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Vider">
       <Properties>
@@ -188,6 +194,9 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="BTN_Vider"/>
       </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_ViderActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Dernier">
       <Properties>
@@ -196,6 +205,9 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="BTN_Dernier"/>
       </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_DernierActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Suivant">
       <Properties>
@@ -204,6 +216,9 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="BTN_Suivant"/>
       </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_SuivantActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Precedent">
       <Properties>
@@ -212,6 +227,9 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="BTN_Precedent"/>
       </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_PrecedentActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTN_Premier">
       <Properties>
@@ -220,6 +238,9 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="BTN_Premier"/>
       </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_PremierActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
     </Component>
@@ -273,11 +294,6 @@
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="LB_Artiste"/>
       </AccessibilityProperties>
     </Component>
-    <Component class="javax.swing.JTextField" name="LB_Categorie">
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="LB_Categorie"/>
-      </AccessibilityProperties>
-    </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator2">
       <Properties>
         <Property name="orientation" type="int" value="1"/>
@@ -301,6 +317,18 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTN_ChoisirPhotoActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="CB_Categories">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
