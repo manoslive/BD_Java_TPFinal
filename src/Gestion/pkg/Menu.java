@@ -32,11 +32,11 @@ public class Menu extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        BTN_Modifier = new javax.swing.JButton();
+        BTN_Fidelite = new javax.swing.JButton();
+        BTN_InformationLivraison = new javax.swing.JButton();
+        BTN_Habitudes = new javax.swing.JButton();
+        BTN_SpectaclesDisponibles = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
@@ -61,25 +61,40 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setText("Choisissez une des tâches suivantes:");
 
-        jButton1.setText("Ajouter/modifier spectacle");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        BTN_Modifier.setText("Ajouter/modifier spectacle");
+        BTN_Modifier.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BTN_ModifierActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Afficher clients fidèles");
-
-        jButton3.setText("Information de livraison");
-
-        jButton4.setText("Habitudes clientèle");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        BTN_Fidelite.setText("Afficher clients fidèles");
+        BTN_Fidelite.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                BTN_FideliteActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Afficher spectacles disponibles");
+        BTN_InformationLivraison.setText("Information de livraison");
+        BTN_InformationLivraison.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_InformationLivraisonActionPerformed(evt);
+            }
+        });
+
+        BTN_Habitudes.setText("Habitudes clientèle");
+        BTN_Habitudes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_HabitudesActionPerformed(evt);
+            }
+        });
+
+        BTN_SpectaclesDisponibles.setText("Afficher spectacles disponibles");
+        BTN_SpectaclesDisponibles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_SpectaclesDisponiblesActionPerformed(evt);
+            }
+        });
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gestion/pkg/Images/png_dessin342_titom_picto_couleurs_papiers_spectacle.png"))); // NOI18N
 
@@ -95,16 +110,14 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton3)
-                                    .addComponent(jButton4)
-                                    .addComponent(jButton1)
-                                    .addComponent(jButton2))
-                                .addGap(67, 67, 67)
-                                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton5))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(BTN_Modifier, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BTN_Fidelite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BTN_Habitudes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BTN_InformationLivraison, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BTN_SpectaclesDisponibles, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)))
                 .addContainerGap(38, Short.MAX_VALUE))
@@ -116,44 +129,59 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(jButton1)
+                        .addComponent(BTN_Modifier)
                         .addGap(34, 34, 34)
-                        .addComponent(jButton2)
+                        .addComponent(BTN_Fidelite)
                         .addGap(30, 30, 30)
-                        .addComponent(jButton4)
+                        .addComponent(BTN_Habitudes)
                         .addGap(28, 28, 28)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5)
-                        .addGap(30, 30, 30))
+                        .addComponent(BTN_InformationLivraison)
+                        .addGap(37, 37, 37)
+                        .addComponent(BTN_SpectaclesDisponibles))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
-        jButton1.getAccessibleContext().setAccessibleName("BTN_Modifier");
-        jButton2.getAccessibleContext().setAccessibleName("BTN_Fidelite");
-        jButton3.getAccessibleContext().setAccessibleName("BTN_InformationLivraison");
-        jButton4.getAccessibleContext().setAccessibleName("BTN_Habitudes");
-        jButton5.getAccessibleContext().setAccessibleName("BTN_SpectaclesDisponibles");
-        jLabel2.getAccessibleContext().setAccessibleName("");
+        BTN_Modifier.getAccessibleContext().setAccessibleName("BTN_Modifier");
+        BTN_Fidelite.getAccessibleContext().setAccessibleName("BTN_Fidelite");
+        BTN_InformationLivraison.getAccessibleContext().setAccessibleName("BTN_InformationLivraison");
+        BTN_Habitudes.getAccessibleContext().setAccessibleName("BTN_Habitudes");
+        BTN_SpectaclesDisponibles.getAccessibleContext().setAccessibleName("BTN_SpectaclesDisponibles");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void BTN_ModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModifierActionPerformed
+        GestionSpectacles gestionSpectacles = new GestionSpectacles();
+        gestionSpectacles.setVisible(true);
+    }//GEN-LAST:event_BTN_ModifierActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void BTN_HabitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_HabitudesActionPerformed
+        Habitudes listHabitudes = new Habitudes();
+        listHabitudes.setVisible(true);
+    }//GEN-LAST:event_BTN_HabitudesActionPerformed
+
+    private void BTN_FideliteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_FideliteActionPerformed
+        Fidelite listFidelite = new Fidelite();
+        listFidelite.setVisible(true);
+    }//GEN-LAST:event_BTN_FideliteActionPerformed
+
+    private void BTN_InformationLivraisonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_InformationLivraisonActionPerformed
+        Livraison mesLivraisons = new Livraison();
+        mesLivraisons.setVisible(true);
+    }//GEN-LAST:event_BTN_InformationLivraisonActionPerformed
+
+    private void BTN_SpectaclesDisponiblesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_SpectaclesDisponiblesActionPerformed
+        SpectaclesDisponibles listSpectables = new SpectaclesDisponibles();
+        listSpectables.setVisible(true);
+    }//GEN-LAST:event_BTN_SpectaclesDisponiblesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,11 +222,11 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton BTN_Fidelite;
+    private javax.swing.JButton BTN_Habitudes;
+    private javax.swing.JButton BTN_InformationLivraison;
+    private javax.swing.JButton BTN_Modifier;
+    private javax.swing.JButton BTN_SpectaclesDisponibles;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
