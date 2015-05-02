@@ -6,6 +6,7 @@
 package Gestion.pkg;
 
 import static Gestion.pkg.SpectaclesDisponibles.connection;
+import java.awt.Component;
 import java.io.File;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -17,13 +18,36 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import oracle.jdbc.OracleTypes;
 
-/**
- *
- * @author Emmanuel
- */
+class ComboItem
+{
+    private String key;
+    private long value;
+
+    public ComboItem(String key, long value)
+    {
+        this.key = key;
+        this.value = value;
+    }
+
+    @Override
+    public String toString()
+    {
+        return key;
+    }
+
+    public String getKey()
+    {
+        return key;
+    }
+
+    public long getValue()
+    {
+        return value;
+    }
+}
 public class GestionSpectacles extends javax.swing.JFrame {
     public static Connection connection;
-    ResultSet rset;
+    ResultSet rset,rsetCategorie;
     public JFileChooser chooser=null;
     /**
      * Creates new form GestionSpectacles
@@ -44,8 +68,12 @@ public class GestionSpectacles extends javax.swing.JFrame {
             stm2.registerOutParameter(1, OracleTypes.CURSOR);
             stm2.execute(); //execution de la fonction
             // Caster le paramètre de retour en ResultSet
-            rset = (ResultSet) stm2.getObject(1);
-            
+            rsetCategorie = (ResultSet) stm2.getObject(1);
+           
+            while(rsetCategorie.next())
+            {
+                CB_Categories.addItem(new ComboItem(rsetCategorie.getString(2), rsetCategorie.getLong(1)));
+            }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -171,8 +199,6 @@ public class GestionSpectacles extends javax.swing.JFrame {
                 BTN_ChoisirPhotoActionPerformed(evt);
             }
         });
-
-        CB_Categories.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -358,7 +384,7 @@ public class GestionSpectacles extends javax.swing.JFrame {
                     CallableStatement stm = connection.prepareCall("{call GESTION.AJOUTERSPECTACLE(?,?,?,?)}");
                     stm.setString(1, TB_Nom.getText());
                     stm.setString(2, LB_Artiste.getText());
-                    //stm.setLong(3, Long.parseLong(LB_Categorie.getText()));
+                    stm.setLong(3, CB_Categories.getSelectedIndex()+1);
                     if(chooser != null)
                         stm.setString(4, chooser.getSelectedFile().getPath());
                     else
