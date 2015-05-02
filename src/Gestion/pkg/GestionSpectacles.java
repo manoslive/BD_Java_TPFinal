@@ -83,8 +83,8 @@ public class GestionSpectacles extends javax.swing.JFrame {
         try{
             TB_Numero.setText(Long.toString(rset.getLong(1)));
             TB_Nom.setText(rset.getString(2));
-            LB_Artiste.setText(rset.getString(3));
-            //CB_Categories.setText(rset.getString(4));
+            LB_Artiste.setText(rset.getString(4));
+            CB_Categories.setSelectedItem(rset.getString(4));
         }
         catch(SQLException ex)
         {
@@ -380,11 +380,30 @@ public class GestionSpectacles extends javax.swing.JFrame {
 
     private void BTN_AjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AjouterActionPerformed
                 try {
+                    long numCat = 0;
+                    switch(CB_Categories.getSelectedItem().toString())
+                    {
+                        case "HUMOUR":
+                            numCat = 1;
+                            break;
+                            
+                        case "THEATRE":
+                            numCat = 2;
+                            break;
+                            
+                        case "SPORT":
+                            numCat = 3;
+                            break;
+                            
+                        case "MUSIQUE":
+                            numCat = 4;
+                            break;
+                    }
                     TB_Numero.setText("");
                     CallableStatement stm = connection.prepareCall("{call GESTION.AJOUTERSPECTACLE(?,?,?,?)}");
                     stm.setString(1, TB_Nom.getText());
                     stm.setString(2, LB_Artiste.getText());
-                    stm.setLong(3, Long.parseLong(CB_Categories.getSelectedIndex()+1));
+                    stm.setLong(3, numCat);
                     if(chooser != null)
                         stm.setString(4, chooser.getSelectedFile().getPath());
                     else
