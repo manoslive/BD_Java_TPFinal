@@ -5,21 +5,47 @@
  */
 package Gestion.pkg;
 
-import java.sql.Connection;
+import java.sql.*;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+import oracle.jdbc.OracleTypes;
 
-/**
- *
- * @author Emmanuel
- */
 public class Habitudes extends javax.swing.JFrame {
     public static Connection connection;
-    /**
-     * Creates new form Habitudes
-     * @param conn
-     */
+    ResultSet rset;
     public Habitudes(Connection conn) {
         initComponents();
         connection = conn;
+        try {
+            CallableStatement stm = connection.prepareCall("{ ? = call GESTION.AFFICHERHABITUDESCLIENTS()}");
+            stm.registerOutParameter(1, OracleTypes.CURSOR);
+            stm.execute(); //execution de la fonction
+            // Caster le paramètre de retour en ResultSet
+            rset = (ResultSet) stm.getObject(1);
+            ResultSetMetaData metaData = rset.getMetaData();
+
+            // names of columns
+            Vector<String> columnNames = new Vector<>();
+            int columnCount = metaData.getColumnCount();
+            for (int column = 1; column <= columnCount; column++) {
+                columnNames.add(metaData.getColumnName(column));
+            }
+            // data of the table
+            Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+            while (rset.next()) {
+                Vector<Object> vector = new Vector<Object>();
+                for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                    //if(rset.getObject(columnIndex))
+                    vector.add(rset.getObject(columnIndex));
+                }
+                data.add(vector);
+            }
+
+            DefaultTableModel model = new DefaultTableModel(data, columnNames);
+            jTableHabitudes.setModel(model);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     /**
@@ -32,12 +58,13 @@ public class Habitudes extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableHabitudes = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Catégories les plus populaires");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableHabitudes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -48,7 +75,7 @@ public class Habitudes extends javax.swing.JFrame {
                 "Numéro", "Nom", "Adresse", "Tel.", "Cat. préférée"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableHabitudes);
 
         jButton2.setText("Quitter");
 
@@ -114,6 +141,6 @@ public class Habitudes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableHabitudes;
     // End of variables declaration//GEN-END:variables
 }
