@@ -5,7 +5,18 @@
  */
 package Gestion.pkg;
 
+import static Gestion.pkg.SpectaclesDisponibles.connection;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import oracle.jdbc.OracleTypes;
 
 /**
  *
@@ -13,6 +24,7 @@ import java.sql.Connection;
  */
 public class Livraison extends javax.swing.JFrame {
     public static Connection connection;
+    ResultSet rset;
     /**
      * Creates new form Livraison
      * @param conn
@@ -20,6 +32,41 @@ public class Livraison extends javax.swing.JFrame {
     public Livraison(Connection conn) {
         initComponents();
         connection = conn;
+        String sql1 = "SELECT NUMCLIENT, NOMCOMPLET, NOMUSAGER, ADRESSECLIENT, NUMTELCLIENT FROM CLIENTS WHERE NUMCLIENT IN(SELECT NUMCLIENT FROM FACTURE)";
+        try {
+            Statement stm = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            //stm.registerOutParameter(1, OracleTypes.CURSOR);
+            //stm.execute; //execution de la fonction
+            // Caster le paramètre de retour en ResultSet
+            //rset = (ResultSet) stm.getObject(1);
+            rset = stm.executeQuery(sql1);
+            rset.next();
+            AfficherUsager();
+            
+            //CallableStatement stm = connection.prepareCall("{ ? = call GESTION.AFFICHERSPECTACLESRESTANTS()}");
+            //stm.registerOutParameter(1, OracleTypes.CURSOR);
+            //stm.execute(); //execution de la fonction
+            // Caster le paramètre de retour en ResultSet
+            //rset = (ResultSet) stm.getObject(1);
+            
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    public void AfficherUsager()
+    {
+        try{
+            TB_Num.setText(Long.toString(rset.getLong(1)));
+            TB_Nom.setText(rset.getString(2));
+            TB_Usager.setText(rset.getString(3));
+            TB_Adresse.setText(rset.getString(4));
+            TB_NumTel.setText(rset.getString(5));
+        }
+        catch(SQLException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
     }
 
     /**
@@ -31,32 +78,47 @@ public class Livraison extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton7 = new javax.swing.JButton();
-        jTextField4 = new javax.swing.JTextField();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
+        BTN_Suivant = new javax.swing.JButton();
+        TB_Adresse = new javax.swing.JTextField();
+        BTN_Precedant = new javax.swing.JButton();
+        BTN_Premier = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton6 = new javax.swing.JButton();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        TB_Num = new javax.swing.JTextField();
+        TB_Nom = new javax.swing.JTextField();
+        BTN_Dernier = new javax.swing.JButton();
+        TB_Usager = new javax.swing.JTextField();
+        TB_NumTel = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Informations client");
         setResizable(false);
 
-        jButton7.setText(">>");
+        BTN_Suivant.setText(">>");
+        BTN_Suivant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_SuivantActionPerformed(evt);
+            }
+        });
 
-        jButton8.setText("<<");
+        BTN_Precedant.setText("<<");
+        BTN_Precedant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_PrecedantActionPerformed(evt);
+            }
+        });
 
-        jButton9.setText("Premier");
+        BTN_Premier.setText("Premier");
+        BTN_Premier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_PremierActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Nom complet");
 
@@ -68,9 +130,14 @@ public class Livraison extends javax.swing.JFrame {
 
         jLabel4.setText("Adresse");
 
-        jTextField1.setEnabled(false);
+        TB_Num.setEnabled(false);
 
-        jButton6.setText("Dernier");
+        BTN_Dernier.setText("Dernier");
+        BTN_Dernier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_DernierActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Num. Tel.");
 
@@ -98,20 +165,20 @@ public class Livraison extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(TB_Num, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TB_Usager, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TB_Adresse, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(TB_NumTel, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(TB_Nom, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(231, 231, 231))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton9)
+                        .addComponent(BTN_Premier)
                         .addGap(28, 28, 28)
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BTN_Precedant, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BTN_Suivant, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
-                        .addComponent(jButton6)
+                        .addComponent(BTN_Dernier)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2)))
                 .addContainerGap())
@@ -121,47 +188,85 @@ public class Livraison extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TB_Num, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TB_Nom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TB_Usager, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TB_Adresse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TB_NumTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(25, 25, 25)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8)
-                    .addComponent(jButton9)
+                    .addComponent(BTN_Dernier)
+                    .addComponent(BTN_Suivant)
+                    .addComponent(BTN_Precedant)
+                    .addComponent(BTN_Premier)
                     .addComponent(jButton2))
                 .addContainerGap())
         );
 
-        jTextField4.getAccessibleContext().setAccessibleName("TB_Adresse");
+        TB_Adresse.getAccessibleContext().setAccessibleName("TB_Adresse");
         jLabel1.getAccessibleContext().setAccessibleName("LB_Fullname");
         jLabel2.getAccessibleContext().setAccessibleName("LB_Username");
         jLabel4.getAccessibleContext().setAccessibleName("LB_Adresse");
-        jTextField2.getAccessibleContext().setAccessibleName("TB_Fullname");
-        jTextField3.getAccessibleContext().setAccessibleName("TB_Username");
-        jTextField5.getAccessibleContext().setAccessibleName("TB_Tel");
+        TB_Nom.getAccessibleContext().setAccessibleName("TB_Fullname");
+        TB_Usager.getAccessibleContext().setAccessibleName("TB_Username");
+        TB_NumTel.getAccessibleContext().setAccessibleName("TB_Tel");
         jLabel6.getAccessibleContext().setAccessibleName("LB_Tel");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BTN_PremierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_PremierActionPerformed
+        try {
+            rset.first();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        AfficherUsager();
+    }//GEN-LAST:event_BTN_PremierActionPerformed
+
+    private void BTN_DernierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_DernierActionPerformed
+        try{
+            rset.last();
+        }catch (SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        AfficherUsager();
+    }//GEN-LAST:event_BTN_DernierActionPerformed
+
+    private void BTN_PrecedantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_PrecedantActionPerformed
+        try{
+            if(rset.previous())
+                AfficherUsager();
+        }catch (SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        AfficherUsager();        
+    }//GEN-LAST:event_BTN_PrecedantActionPerformed
+
+    private void BTN_SuivantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_SuivantActionPerformed
+        try{
+            if(rset.next())
+                AfficherUsager();
+        }catch (SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        AfficherUsager(); 
+    }//GEN-LAST:event_BTN_SuivantActionPerformed
 
     /**
      * @param args the command line arguments
@@ -199,21 +304,21 @@ public class Livraison extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BTN_Dernier;
+    private javax.swing.JButton BTN_Precedant;
+    private javax.swing.JButton BTN_Premier;
+    private javax.swing.JButton BTN_Suivant;
+    private javax.swing.JTextField TB_Adresse;
+    private javax.swing.JTextField TB_Nom;
+    private javax.swing.JTextField TB_Num;
+    private javax.swing.JTextField TB_NumTel;
+    private javax.swing.JTextField TB_Usager;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }
