@@ -384,7 +384,7 @@ public class GestionSpectacles extends javax.swing.JFrame {
                     CallableStatement stm = connection.prepareCall("{call GESTION.AJOUTERSPECTACLE(?,?,?,?)}");
                     stm.setString(1, TB_Nom.getText());
                     stm.setString(2, LB_Artiste.getText());
-                    stm.setLong(3, CB_Categories.getSelectedIndex()+1);
+                    stm.setLong(3, Long.parseLong(CB_Categories.getSelectedIndex()+1));
                     if(chooser != null)
                         stm.setString(4, chooser.getSelectedFile().getPath());
                     else
