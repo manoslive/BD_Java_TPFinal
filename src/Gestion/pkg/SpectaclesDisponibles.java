@@ -5,17 +5,59 @@
  */
 package Gestion.pkg;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+import oracle.jdbc.OracleTypes;
+
 /**
  *
  * @author Emmanuel
  */
 public class SpectaclesDisponibles extends javax.swing.JFrame {
-
+    public static Connection connection;
+    ResultSet rset;
     /**
      * Creates new form SpectaclesDisponibles
+     * @param conn
      */
-    public SpectaclesDisponibles() {
+    public SpectaclesDisponibles(Connection conn) {
         initComponents();
+        connection = conn;
+        try {
+            CallableStatement stm = connection.prepareCall("{ ? = call GESTION.AFFICHERSPECTACLESRESTANTS()}");
+            stm.registerOutParameter(1, OracleTypes.CURSOR);
+            stm.execute(); //execution de la fonction
+            // Caster le paramètre de retour en ResultSet
+            rset = (ResultSet) stm.getObject(1);
+            ResultSetMetaData metaData = rset.getMetaData();
+
+            // names of columns
+            Vector<String> columnNames = new Vector<String>();
+            int columnCount = metaData.getColumnCount();
+            for (int column = 1; column <= columnCount; column++) {
+                columnNames.add(metaData.getColumnName(column));
+            }
+            // data of the table
+            Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+            while (rset.next()) {
+                Vector<Object> vector = new Vector<Object>();
+                for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                    //if(rset.getObject(columnIndex))
+                    vector.add(rset.getObject(columnIndex));
+                }
+                data.add(vector);
+            }
+
+            DefaultTableModel model = new DefaultTableModel(data, columnNames);
+            jTable_Spectacles.setModel(model);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     /**
@@ -29,15 +71,20 @@ public class SpectaclesDisponibles extends javax.swing.JFrame {
 
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable_Spectacles = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Spectacles disponibles");
         setResizable(false);
 
         jButton2.setText("Quitter");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable_Spectacles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -48,7 +95,7 @@ public class SpectaclesDisponibles extends javax.swing.JFrame {
                 "Numéro", "Nom", "Catégorie", "Artiste"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTable_Spectacles);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,6 +120,10 @@ public class SpectaclesDisponibles extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        System.exit(1);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -104,7 +155,7 @@ public class SpectaclesDisponibles extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SpectaclesDisponibles().setVisible(true);
+                //new SpectaclesDisponibles().setVisible(true);
             }
         });
     }
@@ -112,6 +163,6 @@ public class SpectaclesDisponibles extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable_Spectacles;
     // End of variables declaration//GEN-END:variables
 }
