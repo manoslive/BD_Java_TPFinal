@@ -40,7 +40,6 @@ public class Habitudes extends javax.swing.JFrame {
                 }
                 data.add(vector);
             }
-
             DefaultTableModel model = new DefaultTableModel(data, columnNames);
             jTableHabitudes.setModel(model);
         } catch (SQLException ex) {
