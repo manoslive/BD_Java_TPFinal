@@ -5,16 +5,20 @@
  */
 package Gestion.pkg;
 
+import java.sql.Connection;
+
 /**
  *
  * @author Emmanuel
  */
 public class Menu extends javax.swing.JFrame {
-
+    public static Connection connection;
     /**
      * Creates new form NewJFrame
+     * @param maConnection
      */
-    public Menu() {
+    public Menu(Connection maConnection) {
+        connection = maConnection;
         initComponents();
     }
 
@@ -159,27 +163,27 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BTN_ModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModifierActionPerformed
-        GestionSpectacles gestionSpectacles = new GestionSpectacles();
+        GestionSpectacles gestionSpectacles = new GestionSpectacles(connection);
         gestionSpectacles.setVisible(true);
     }//GEN-LAST:event_BTN_ModifierActionPerformed
 
     private void BTN_HabitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_HabitudesActionPerformed
-        Habitudes listHabitudes = new Habitudes();
+        Habitudes listHabitudes = new Habitudes(connection);
         listHabitudes.setVisible(true);
     }//GEN-LAST:event_BTN_HabitudesActionPerformed
 
     private void BTN_FideliteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_FideliteActionPerformed
-        Fidelite listFidelite = new Fidelite();
+        Fidelite listFidelite = new Fidelite(connection);
         listFidelite.setVisible(true);
     }//GEN-LAST:event_BTN_FideliteActionPerformed
 
     private void BTN_InformationLivraisonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_InformationLivraisonActionPerformed
-        Livraison mesLivraisons = new Livraison();
+        Livraison mesLivraisons = new Livraison(connection);
         mesLivraisons.setVisible(true);
     }//GEN-LAST:event_BTN_InformationLivraisonActionPerformed
 
     private void BTN_SpectaclesDisponiblesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_SpectaclesDisponiblesActionPerformed
-        SpectaclesDisponibles listSpectables = new SpectaclesDisponibles();
+        SpectaclesDisponibles listSpectables = new SpectaclesDisponibles(connection);
         listSpectables.setVisible(true);
     }//GEN-LAST:event_BTN_SpectaclesDisponiblesActionPerformed
 
@@ -216,7 +220,7 @@ public class Menu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Menu().setVisible(true);
+                //new Menu().setVisible(true);
             }
         });
     }

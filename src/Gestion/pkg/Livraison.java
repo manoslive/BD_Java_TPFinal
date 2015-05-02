@@ -5,17 +5,21 @@
  */
 package Gestion.pkg;
 
+import java.sql.Connection;
+
 /**
  *
  * @author Emmanuel
  */
 public class Livraison extends javax.swing.JFrame {
-
+    public static Connection connection;
     /**
      * Creates new form Livraison
+     * @param conn
      */
-    public Livraison() {
+    public Livraison(Connection conn) {
         initComponents();
+        connection = conn;
     }
 
     /**
@@ -189,7 +193,7 @@ public class Livraison extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Livraison().setVisible(true);
+                //new Livraison().setVisible(true);
             }
         });
     }

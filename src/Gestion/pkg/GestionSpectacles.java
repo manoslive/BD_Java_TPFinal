@@ -5,17 +5,25 @@
  */
 package Gestion.pkg;
 
+import java.io.File;
+import java.sql.Connection;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author Emmanuel
  */
 public class GestionSpectacles extends javax.swing.JFrame {
-
+    public static Connection connection;
     /**
      * Creates new form GestionSpectacles
+     * @param conn
      */
-    public GestionSpectacles() {
+    public GestionSpectacles(Connection conn) {
         initComponents();
+        connection = conn;
     }
 
     /**
@@ -27,48 +35,48 @@ public class GestionSpectacles extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        BTN_Ajouter = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
+        BTN_Modifier = new javax.swing.JButton();
+        BTN_Supprimer = new javax.swing.JButton();
+        BTN_Vider = new javax.swing.JButton();
+        BTN_Dernier = new javax.swing.JButton();
+        BTN_Suivant = new javax.swing.JButton();
+        BTN_Precedent = new javax.swing.JButton();
+        BTN_Premier = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        TB_Numero = new javax.swing.JTextField();
+        TB_Nom = new javax.swing.JTextField();
+        LB_Artiste = new javax.swing.JTextField();
+        LB_Categorie = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
-        jLabel5 = new javax.swing.JLabel();
+        IMG_AfficheSpectacle = new javax.swing.JLabel();
+        BTN_ChoisirPhoto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestion spectacles");
-        setResizable(false);
 
-        jButton1.setText("Ajouter");
+        BTN_Ajouter.setText("Ajouter");
 
         jButton2.setText("Quitter");
 
-        jButton3.setText("Modifier");
+        BTN_Modifier.setText("Modifier");
 
-        jButton4.setText("Supprimer");
+        BTN_Supprimer.setText("Supprimer");
 
-        jButton5.setText("Vider");
+        BTN_Vider.setText("Vider");
 
-        jButton6.setText("Dernier");
+        BTN_Dernier.setText("Dernier");
 
-        jButton7.setText(">>");
+        BTN_Suivant.setText(">>");
 
-        jButton8.setText("<<");
+        BTN_Precedent.setText("<<");
 
-        jButton9.setText("Premier");
+        BTN_Premier.setText("Premier");
 
         jLabel1.setText("Nom");
 
@@ -78,12 +86,19 @@ public class GestionSpectacles extends javax.swing.JFrame {
 
         jLabel4.setText("Catégorie");
 
-        jTextField1.setEnabled(false);
+        TB_Numero.setEnabled(false);
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator2.setToolTipText("");
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gestion/pkg/Images/png_dessin342_titom_picto_couleurs_papiers_spectacle.png"))); // NOI18N
+        IMG_AfficheSpectacle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gestion/pkg/Images/png_dessin342_titom_picto_couleurs_papiers_spectacle.png"))); // NOI18N
+
+        BTN_ChoisirPhoto.setText("Choisir une photo");
+        BTN_ChoisirPhoto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_ChoisirPhotoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,31 +116,35 @@ public class GestionSpectacles extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(TB_Nom, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TB_Numero, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LB_Artiste, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LB_Categorie, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(IMG_AfficheSpectacle, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(BTN_ChoisirPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(BTN_Premier, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BTN_Vider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(BTN_Ajouter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BTN_Precedent, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(50, 50, 50)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(BTN_Modifier, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BTN_Suivant, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(70, 70, 70)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(BTN_Supprimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BTN_Dernier, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -135,21 +154,21 @@ public class GestionSpectacles extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TB_Numero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TB_Nom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addComponent(jLabel1)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(LB_Artiste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LB_Categorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
                         .addGap(42, 42, 42))
                     .addGroup(layout.createSequentialGroup()
@@ -159,47 +178,61 @@ public class GestionSpectacles extends javax.swing.JFrame {
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(IMG_AfficheSpectacle, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(BTN_ChoisirPhoto)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8)
-                    .addComponent(jButton9))
+                    .addComponent(BTN_Dernier)
+                    .addComponent(BTN_Suivant)
+                    .addComponent(BTN_Precedent)
+                    .addComponent(BTN_Premier))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton1)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(BTN_Modifier)
+                    .addComponent(BTN_Ajouter)
+                    .addComponent(BTN_Supprimer)
+                    .addComponent(BTN_Vider))
                 .addGap(26, 26, 26)
                 .addComponent(jButton2)
                 .addContainerGap())
         );
 
-        jButton1.getAccessibleContext().setAccessibleName("BTN_Ajouter");
+        BTN_Ajouter.getAccessibleContext().setAccessibleName("BTN_Ajouter");
         jButton2.getAccessibleContext().setAccessibleName("BTN_Quitter");
-        jButton3.getAccessibleContext().setAccessibleName("BTN_Modifier");
-        jButton4.getAccessibleContext().setAccessibleName("BTN_Supprimer");
-        jButton5.getAccessibleContext().setAccessibleName("BTN_Vider");
-        jButton6.getAccessibleContext().setAccessibleName("BTN_Dernier");
-        jButton7.getAccessibleContext().setAccessibleName("BTN_Suivant");
-        jButton8.getAccessibleContext().setAccessibleName("BTN_Precedent");
-        jButton9.getAccessibleContext().setAccessibleName("BTN_Premier");
+        BTN_Modifier.getAccessibleContext().setAccessibleName("BTN_Modifier");
+        BTN_Supprimer.getAccessibleContext().setAccessibleName("BTN_Supprimer");
+        BTN_Vider.getAccessibleContext().setAccessibleName("BTN_Vider");
+        BTN_Dernier.getAccessibleContext().setAccessibleName("BTN_Dernier");
+        BTN_Suivant.getAccessibleContext().setAccessibleName("BTN_Suivant");
+        BTN_Precedent.getAccessibleContext().setAccessibleName("BTN_Precedent");
+        BTN_Premier.getAccessibleContext().setAccessibleName("BTN_Premier");
         jLabel1.getAccessibleContext().setAccessibleName("LB_Nom");
         jLabel2.getAccessibleContext().setAccessibleName("LB_Artiste");
         jLabel3.getAccessibleContext().setAccessibleName("LB_Numero");
         jLabel4.getAccessibleContext().setAccessibleName("LB_Categorie");
-        jTextField1.getAccessibleContext().setAccessibleName("TB_Numero");
-        jTextField2.getAccessibleContext().setAccessibleName("TB_Nom");
-        jTextField3.getAccessibleContext().setAccessibleName("LB_Artiste");
-        jTextField4.getAccessibleContext().setAccessibleName("LB_Categorie");
-        jLabel5.getAccessibleContext().setAccessibleName("IMG_AfficheSpectacle");
+        TB_Numero.getAccessibleContext().setAccessibleName("TB_Numero");
+        TB_Nom.getAccessibleContext().setAccessibleName("TB_Nom");
+        LB_Artiste.getAccessibleContext().setAccessibleName("LB_Artiste");
+        LB_Categorie.getAccessibleContext().setAccessibleName("LB_Categorie");
+        IMG_AfficheSpectacle.getAccessibleContext().setAccessibleName("IMG_AfficheSpectacle");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BTN_ChoisirPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ChoisirPhotoActionPerformed
+        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir") + "\\src\\Gestion\\pkg\\Images");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "JPG & GIF Images", "jpg", "gif", "jpeg", "png", "bmp");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            IMG_AfficheSpectacle.setIcon(new ImageIcon(chooser.getSelectedFile().getPath()));
+            IMG_AfficheSpectacle.setSize(200,200);
+        }
+    }//GEN-LAST:event_BTN_ChoisirPhotoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -231,31 +264,32 @@ public class GestionSpectacles extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GestionSpectacles().setVisible(true);
+                //new GestionSpectacles().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton BTN_Ajouter;
+    private javax.swing.JButton BTN_ChoisirPhoto;
+    private javax.swing.JButton BTN_Dernier;
+    private javax.swing.JButton BTN_Modifier;
+    private javax.swing.JButton BTN_Precedent;
+    private javax.swing.JButton BTN_Premier;
+    private javax.swing.JButton BTN_Suivant;
+    private javax.swing.JButton BTN_Supprimer;
+    private javax.swing.JButton BTN_Vider;
+    private javax.swing.JLabel IMG_AfficheSpectacle;
+    private javax.swing.JTextField LB_Artiste;
+    private javax.swing.JTextField LB_Categorie;
+    private javax.swing.JTextField TB_Nom;
+    private javax.swing.JTextField TB_Numero;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }

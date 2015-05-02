@@ -5,17 +5,21 @@
  */
 package Gestion.pkg;
 
+import java.sql.Connection;
+
 /**
  *
  * @author Emmanuel
  */
 public class Fidelite extends javax.swing.JFrame {
-
+    public static Connection connection;
     /**
      * Creates new form Fidelite
+     * @param conn
      */
-    public Fidelite() {
+    public Fidelite(Connection conn) {
         initComponents();
+        connection = conn;
     }
 
     /**
@@ -102,7 +106,7 @@ public class Fidelite extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Fidelite().setVisible(true);
+                //new Fidelite().setVisible(true);
             }
         });
     }

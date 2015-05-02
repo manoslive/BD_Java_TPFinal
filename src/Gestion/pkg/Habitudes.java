@@ -5,17 +5,21 @@
  */
 package Gestion.pkg;
 
+import java.sql.Connection;
+
 /**
  *
  * @author Emmanuel
  */
 public class Habitudes extends javax.swing.JFrame {
-
+    public static Connection connection;
     /**
      * Creates new form Habitudes
+     * @param conn
      */
-    public Habitudes() {
+    public Habitudes(Connection conn) {
         initComponents();
+        connection = conn;
     }
 
     /**
@@ -102,7 +106,7 @@ public class Habitudes extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Habitudes().setVisible(true);
+                //new Habitudes().setVisible(true);
             }
         });
     }
