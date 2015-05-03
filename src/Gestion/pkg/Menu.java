@@ -6,6 +6,10 @@
 package Gestion.pkg;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
@@ -61,6 +65,11 @@ public class Menu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestion du RéseauAdmission");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setText("Choisissez une des tâches suivantes:");
@@ -165,27 +174,41 @@ public class Menu extends javax.swing.JFrame {
     private void BTN_ModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModifierActionPerformed
         GestionSpectacles gestionSpectacles = new GestionSpectacles(connection);
         gestionSpectacles.setVisible(true);
+        gestionSpectacles.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_BTN_ModifierActionPerformed
 
     private void BTN_HabitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_HabitudesActionPerformed
         Habitudes listHabitudes = new Habitudes(connection);
         listHabitudes.setVisible(true);
+        listHabitudes.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_BTN_HabitudesActionPerformed
 
     private void BTN_FideliteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_FideliteActionPerformed
         Fidelite listFidelite = new Fidelite(connection);
         listFidelite.setVisible(true);
+        listFidelite.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_BTN_FideliteActionPerformed
 
     private void BTN_InformationLivraisonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_InformationLivraisonActionPerformed
         Livraison mesLivraisons = new Livraison(connection);
         mesLivraisons.setVisible(true);
+        mesLivraisons.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_BTN_InformationLivraisonActionPerformed
 
     private void BTN_SpectaclesDisponiblesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_SpectaclesDisponiblesActionPerformed
         SpectaclesDisponibles listSpectables = new SpectaclesDisponibles(connection);
         listSpectables.setVisible(true);
+        listSpectables.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_BTN_SpectaclesDisponiblesActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        try {
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("connexion fermée");
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

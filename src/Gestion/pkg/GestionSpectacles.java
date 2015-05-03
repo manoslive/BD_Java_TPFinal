@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import oracle.jdbc.OracleTypes;
 
@@ -56,24 +58,31 @@ public class GestionSpectacles extends javax.swing.JFrame {
     public GestionSpectacles(Connection conn) {
         initComponents();
         connection = conn;
+        RefreshList();
+    }
+    public void RefreshList()
+    {
         String sql1 = "SELECT NUMSPECTACLE, NOMSPECTACLE, NOMCATEGORIE, ARTISTESPECTACLE, AFFICHESPECTACLE FROM SPECTACLES SP" +
                      " INNER JOIN CATEGORIES_SPECTACLE CS ON SP.NUMCATEGORIE=CS.NUMCATEGORIE Order by SP.NUMSPECTACLE";
         try {
+            rset =null;
             Statement stm = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             rset = stm.executeQuery(sql1);
             rset.next();
-            AfficherSpectacle();
             
             CallableStatement stm2 = connection.prepareCall("{ ? = call GESTION.AFFICHERCATEGORIES()}");
             stm2.registerOutParameter(1, OracleTypes.CURSOR);
             stm2.execute(); //execution de la fonction
             // Caster le paramètre de retour en ResultSet
+            rsetCategorie = null;
             rsetCategorie = (ResultSet) stm2.getObject(1);
            
+            CB_Categories.removeAllItems();
             while(rsetCategorie.next())
             {
                 CB_Categories.addItem(new ComboItem(rsetCategorie.getString(2), rsetCategorie.getLong(1)));
             }
+            AfficherSpectacle();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -84,7 +93,28 @@ public class GestionSpectacles extends javax.swing.JFrame {
             TB_Numero.setText(Long.toString(rset.getLong(1)));
             TB_Nom.setText(rset.getString(2));
             LB_Artiste.setText(rset.getString(4));
-            CB_Categories.setSelectedItem(rset.getString(4));
+                    int numCat = 0;
+                    switch(rset.getString(3))
+                    {
+                        case "HUMOUR":
+                            numCat = 0;
+                            break;
+                            
+                        case "THEATRE":
+                            numCat = 1;
+                            break;
+                            
+                        case "SPORT":
+                            numCat = 2;
+                            break;
+                            
+                        case "MUSIQUE":
+                            numCat = 3;
+                            break;
+                    }
+            CB_Categories.setSelectedIndex(numCat);
+            IMG_AfficheSpectacle.setIcon(new ImageIcon(rset.getString(5)));
+            SetButtons();
         }
         catch(SQLException ex)
         {
@@ -133,8 +163,18 @@ public class GestionSpectacles extends javax.swing.JFrame {
         });
 
         jButton2.setText("Quitter");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         BTN_Modifier.setText("Modifier");
+        BTN_Modifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_ModifierActionPerformed(evt);
+            }
+        });
 
         BTN_Supprimer.setText("Supprimer");
         BTN_Supprimer.addActionListener(new java.awt.event.ActionListener() {
@@ -186,6 +226,7 @@ public class GestionSpectacles extends javax.swing.JFrame {
 
         jLabel4.setText("Catégorie");
 
+        TB_Numero.setDisabledTextColor(new java.awt.Color(51, 51, 51));
         TB_Numero.setEnabled(false);
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -321,6 +362,22 @@ public class GestionSpectacles extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void SetButtons()
+    {
+        if("".equals(TB_Numero.getText()))
+        {
+            BTN_Supprimer.setEnabled(false);
+            BTN_Modifier.setEnabled(false);
+            BTN_Ajouter.setEnabled(true);
+        }
+        else
+        {
+            BTN_Supprimer.setEnabled(true);
+            BTN_Modifier.setEnabled(true);
+            BTN_Ajouter.setEnabled(false);
+        }
+    }
+    
     private void BTN_ChoisirPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ChoisirPhotoActionPerformed
         chooser = new JFileChooser(System.getProperty("user.dir") + "\\src\\Gestion\\pkg\\Images");
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -353,8 +410,11 @@ public class GestionSpectacles extends javax.swing.JFrame {
 
     private void BTN_PrecedentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_PrecedentActionPerformed
         try{
-            if(rset.previous())
+            if(!rset.isFirst())
+            {
+                rset.previous();
                 AfficherSpectacle();
+            }
         }catch (SQLException ex){
             System.out.println(ex.getMessage());
         }
@@ -363,8 +423,11 @@ public class GestionSpectacles extends javax.swing.JFrame {
 
     private void BTN_SuivantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_SuivantActionPerformed
         try{
-            if(rset.next())
+            if(!rset.isLast())
+            {
+                rset.next();
                 AfficherSpectacle();
+            }
         }catch (SQLException ex){
             System.out.println(ex.getMessage());
         }
@@ -375,12 +438,13 @@ public class GestionSpectacles extends javax.swing.JFrame {
         TB_Numero.setText("");
         TB_Nom.setText("");
         LB_Artiste.setText("");
-        //CB_Categories.setText("");
+        CB_Categories.setSelectedIndex(1);
+        SetButtons();
     }//GEN-LAST:event_BTN_ViderActionPerformed
 
     private void BTN_AjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AjouterActionPerformed
                 try {
-                    long numCat = 0;
+                    long numCat = 1;
                     switch(CB_Categories.getSelectedItem().toString())
                     {
                         case "HUMOUR":
@@ -402,13 +466,15 @@ public class GestionSpectacles extends javax.swing.JFrame {
                     TB_Numero.setText("");
                     CallableStatement stm = connection.prepareCall("{call GESTION.AJOUTERSPECTACLE(?,?,?,?)}");
                     stm.setString(1, TB_Nom.getText());
-                    stm.setString(2, LB_Artiste.getText());
-                    stm.setLong(3, numCat);
+                    stm.setLong(2, numCat);
+                    stm.setString(3, LB_Artiste.getText());                    
                     if(chooser != null)
                         stm.setString(4, chooser.getSelectedFile().getPath());
                     else
                         stm.setString(4, IMG_AfficheSpectacle.getIcon().toString());
                     stm.execute(); //execution de la fonction
+                    rset.first();
+                    RefreshList();
                 } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                 }
@@ -419,12 +485,52 @@ public class GestionSpectacles extends javax.swing.JFrame {
                     CallableStatement stm = connection.prepareCall("{call GESTION.SUPPRIMERSPECTACLE(?)}");
                     stm.setString(1, TB_Numero.getText());
                     stm.execute(); //execution de la fonction
-                    rset.beforeFirst();;
-                    AfficherSpectacle();
+                    RefreshList();
                 } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                 }
     }//GEN-LAST:event_BTN_SupprimerActionPerformed
+
+    private void BTN_ModifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ModifierActionPerformed
+                try {
+                    long numCat = 0;
+                    switch(CB_Categories.getSelectedItem().toString())
+                    {
+                        case "HUMOUR":
+                            numCat = 1;
+                            break;
+                            
+                        case "THEATRE":
+                            numCat = 2;
+                            break;
+                            
+                        case "SPORT":
+                            numCat = 3;
+                            break;
+                            
+                        case "MUSIQUE":
+                            numCat = 4;
+                            break;
+                    }
+                    CallableStatement stm = connection.prepareCall("{call GESTION.MODIFIERSPECTACLE(?,?,?,?,?)}");
+                    stm.setString(1, TB_Numero.getText());
+                    stm.setString(2, TB_Nom.getText());
+                    stm.setLong(3, numCat);
+                    stm.setString(4, LB_Artiste.getText());
+                    if(chooser != null)
+                        stm.setString(5, chooser.getSelectedFile().getPath());
+                    else
+                        stm.setString(5, IMG_AfficheSpectacle.getIcon().toString());
+                    stm.execute(); //execution de la fonction7
+                    RefreshList();
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+    }//GEN-LAST:event_BTN_ModifierActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

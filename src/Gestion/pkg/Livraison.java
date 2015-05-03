@@ -106,6 +106,9 @@ public class Livraison extends javax.swing.JFrame {
             }
         });
 
+        TB_Adresse.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        TB_Adresse.setEnabled(false);
+
         BTN_Precedant.setText("<<");
         BTN_Precedant.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,12 +128,21 @@ public class Livraison extends javax.swing.JFrame {
         jLabel2.setText("Nom usager");
 
         jButton2.setText("Quitter");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Numéro");
 
         jLabel4.setText("Adresse");
 
+        TB_Num.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         TB_Num.setEnabled(false);
+
+        TB_Nom.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        TB_Nom.setEnabled(false);
 
         BTN_Dernier.setText("Dernier");
         BTN_Dernier.addActionListener(new java.awt.event.ActionListener() {
@@ -138,6 +150,12 @@ public class Livraison extends javax.swing.JFrame {
                 BTN_DernierActionPerformed(evt);
             }
         });
+
+        TB_Usager.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        TB_Usager.setEnabled(false);
+
+        TB_NumTel.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        TB_NumTel.setEnabled(false);
 
         jLabel6.setText("Num. Tel.");
 
@@ -250,8 +268,11 @@ public class Livraison extends javax.swing.JFrame {
 
     private void BTN_PrecedantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_PrecedantActionPerformed
         try{
-            if(rset.previous())
+            if(!rset.isFirst())
+            {
+                rset.previous();
                 AfficherUsager();
+            }
         }catch (SQLException ex){
             System.out.println(ex.getMessage());
         }
@@ -260,13 +281,20 @@ public class Livraison extends javax.swing.JFrame {
 
     private void BTN_SuivantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_SuivantActionPerformed
         try{
-            if(rset.next())
+            if(!rset.isLast())
+            {
+                rset.next();
                 AfficherUsager();
+            }
         }catch (SQLException ex){
             System.out.println(ex.getMessage());
         }
         AfficherUsager(); 
     }//GEN-LAST:event_BTN_SuivantActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
