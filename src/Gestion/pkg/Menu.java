@@ -48,6 +48,7 @@ public class Menu extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
+        BTN_Modifier1 = new javax.swing.JButton();
 
         jMenu3.setText("jMenu3");
 
@@ -113,6 +114,13 @@ public class Menu extends javax.swing.JFrame {
 
         jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        BTN_Modifier1.setText("Ajouter représentation");
+        BTN_Modifier1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_Modifier1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -120,7 +128,7 @@ public class Menu extends javax.swing.JFrame {
             .addComponent(jSeparator1)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -128,38 +136,44 @@ public class Menu extends javax.swing.JFrame {
                             .addComponent(BTN_Fidelite, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(BTN_Habitudes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(BTN_InformationLivraison, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(BTN_SpectaclesDisponibles, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)))
-                .addContainerGap(38, Short.MAX_VALUE))
+                            .addComponent(BTN_SpectaclesDisponibles, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(BTN_Modifier1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addGap(37, 37, 37)))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(72, 72, 72)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                        .addGap(26, 26, 26)
                         .addComponent(BTN_Modifier)
-                        .addGap(34, 34, 34)
+                        .addGap(27, 27, 27)
+                        .addComponent(BTN_Modifier1)
+                        .addGap(29, 29, 29)
                         .addComponent(BTN_Fidelite)
-                        .addGap(30, 30, 30)
-                        .addComponent(BTN_Habitudes)
-                        .addGap(28, 28, 28)
-                        .addComponent(BTN_InformationLivraison)
-                        .addGap(37, 37, 37)
-                        .addComponent(BTN_SpectaclesDisponibles))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(BTN_Habitudes)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addComponent(BTN_InformationLivraison)
+                        .addGap(25, 25, 25)
+                        .addComponent(BTN_SpectaclesDisponibles)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator4))))
         );
 
         BTN_Modifier.getAccessibleContext().setAccessibleName("BTN_Modifier");
@@ -210,6 +224,12 @@ public class Menu extends javax.swing.JFrame {
         System.out.println("connexion fermée");
     }//GEN-LAST:event_formWindowClosing
 
+    private void BTN_Modifier1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_Modifier1ActionPerformed
+        AjouterRepresentation rep = new AjouterRepresentation(connection);
+        rep.setVisible(true);
+        rep.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_BTN_Modifier1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -253,6 +273,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton BTN_Habitudes;
     private javax.swing.JButton BTN_InformationLivraison;
     private javax.swing.JButton BTN_Modifier;
+    private javax.swing.JButton BTN_Modifier1;
     private javax.swing.JButton BTN_SpectaclesDisponibles;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
