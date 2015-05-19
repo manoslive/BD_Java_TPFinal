@@ -10,6 +10,11 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,17 +35,29 @@ public class AjouterRepresentation extends javax.swing.JFrame {
         initComponents();
     }
 
-    public void AjouterUneRepresentation() {
+    public void AjouterUneRepresentation(){
         try {
+            // Conversion de la date
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
+            java.util.Date date = sdf.parse(TB_Date.getText());
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            // Convertion de l'heure
+            SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yy");
+            java.util.Date date2 = sdf2.parse(TB_Heure.getText());
+            java.sql.Date sqlDate2 = new java.sql.Date(date2.getTime());
+
             CallableStatement stm = connection.prepareCall("{ call GESTION.AJOUTERREPRESENTATION(?,?,?,?) }");
             stm.setLong(1, Long.parseLong(TB_NumSpectacle.getText()));
             stm.setLong(2, Long.parseLong(TB_NumSalle.getText()));
-            stm.setDate(3, Date.valueOf(TB_Date.getText()));
-            stm.setDate(4, Date.valueOf(TB_Heure.getText()));
+            stm.setDate(3, sqlDate);
+            stm.setDate(4, sqlDate2);
             stm.execute(); //execution de la fonction
-            
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+        } catch (ParseException ex) {
+            System.out.println("pas marché!");
+            Logger.getLogger(AjouterRepresentation.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -81,6 +98,11 @@ public class AjouterRepresentation extends javax.swing.JFrame {
         jLabel4.setText("Date représentation");
 
         BTN_Vider.setText("Vider");
+        BTN_Vider.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_ViderActionPerformed(evt);
+            }
+        });
 
         BTN_Ajouter.setText("Ajouter");
         BTN_Ajouter.addActionListener(new java.awt.event.ActionListener() {
@@ -90,6 +112,11 @@ public class AjouterRepresentation extends javax.swing.JFrame {
         });
 
         BTN_Quitter.setText("Quitter");
+        BTN_Quitter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTN_QuitterActionPerformed(evt);
+            }
+        });
 
         TB_NumSalle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,6 +197,17 @@ public class AjouterRepresentation extends javax.swing.JFrame {
     private void BTN_AjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_AjouterActionPerformed
         AjouterUneRepresentation();
     }//GEN-LAST:event_BTN_AjouterActionPerformed
+
+    private void BTN_QuitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_QuitterActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_BTN_QuitterActionPerformed
+
+    private void BTN_ViderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTN_ViderActionPerformed
+        TB_NumSpectacle.setText("");
+        TB_NumSalle.setText("");
+        TB_Date.setText("12-12-2015");
+        TB_Heure.setText("12-12-2015");
+    }//GEN-LAST:event_BTN_ViderActionPerformed
 
     /**
      * @param args the command line arguments
